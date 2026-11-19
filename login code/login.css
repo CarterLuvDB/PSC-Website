@@ -1,0 +1,331 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #ef2b2b;
+}
+
+.login-container {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+}
+
+.login-box {
+    width: 70vw;
+    height: 80vh;
+
+    background: white;
+    border-radius: 30px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+}
+
+.login-header {
+    height: 90px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 15px 25px;
+
+    flex-shrink: 0;
+}
+
+.login-header img {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+}
+
+.club-name {
+    margin-left: 12px;
+}
+
+.club-main {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.club-sub {
+    font-size: 13px;
+    color: #777;
+}
+
+.login-content {
+    flex: 1;
+
+    display: flex;
+
+    border-top: 1px solid #ddd;
+
+    min-height: 0;
+}
+
+
+.login-right {
+    width: 60%;
+}
+
+.login-left {
+    width: 40%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 2.5%;
+}
+
+.ad-box {
+    width: 100%;
+    aspect-ratio: 8 / 10;
+
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.ad-box img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.ad-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.75s ease;
+}
+
+.ad-image.active {
+    opacity: 1;
+}
+
+.ad-selector {
+    position: absolute;
+
+    left: 5%;
+    right: 5%;
+    bottom: 3%;
+
+    height: 5px;
+
+    display: flex;
+    gap: 10px;
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    z-index: 10;
+}
+
+.ad-tab {
+    flex: 1;
+    cursor: pointer;
+
+    background: rgba(128, 128, 128, 0.35);
+    border-radius: 6px;
+}
+
+.ad-tab:hover {
+    background: rgba(255, 255, 255, 0.578);
+}
+
+.ad-tab.active {
+    background: rgb(251, 251, 251);
+}
+
+/* =========================
+   LOGIN RIGHT
+========================= */
+
+.login-right {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 50px;
+}
+
+
+/* =========================
+   I. TITLE
+========================= */
+
+.login-title {
+    height: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title-text-1 {
+    font-family: Arial, sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: #A00000;
+    letter-spacing: -0.5px;
+}
+
+.title-text-2 {
+    margin-top: 8px;
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #777777;
+}
+
+
+/* =========================
+   II. LOGIN PAD
+========================= */
+
+.login-pad {
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.input-zone {
+    height: 25%;
+    display: flex;
+    align-items: center;
+}
+
+.input-zone input {
+    width: 100%;
+    height: 55px;
+    padding: 0 18px;
+
+    border: 1px solid #ddd;
+    border-radius: 14px;
+
+    font-size: 15px;
+    outline: none;
+}
+
+.input-zone input:focus {
+    border-color: #ef2b2b;
+}
+
+
+/* PASSWORD */
+
+.password-zone {
+    display: flex;
+    gap: 8px;
+}
+
+.password-zone input {
+    width: 87.5%;
+}
+.show-password img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+.show-password {
+    width: 12.5%;
+    height: 55px;
+
+    border: 1px solid #ddd;
+    border-radius: 14px;
+
+    background: white;
+    cursor: pointer;
+
+    font-size: 18px;
+}
+
+
+/* FORGOT PASSWORD */
+
+.forgot-password {
+    height: 5%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.forgot-password a {
+    color: #0066cc;
+    text-decoration: underline;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+}
+
+
+/* LOGIN BUTTON */
+
+.login-button {
+    height: 25%;
+
+    border: none;
+    border-radius: 14px;
+
+    background: #ef2b2b;
+    color: white;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   III. LOGIN WITH
+========================= */
+
+.login-with {
+    height: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-with-text {
+    height: 25%;
+    display: flex;
+    align-items: center;
+    font-family: sans-serif;
+    font-size: 13px;
+    color: #777;
+}
+
+.event-button {
+    width: 70%;
+    height: 45%;
+
+    margin-top: 8px;
+
+    border: 1px solid #ef2b2b;
+    border-radius: 14px;
+
+    background: white;
+    color: #ef2b2b;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}

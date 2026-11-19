@@ -1,0 +1,1 @@
+Banner phần login bắt buộc có ratio aspect = 8:10 = 4:5 để đẹp nhất.

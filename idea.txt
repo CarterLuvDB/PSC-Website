@@ -1,0 +1,10 @@
+Làm về Nitro giống discord, tùy chỉnh giao diện ng dùng nè -> 5k/tháng hay sao đó
+
+key khởi tạo : Chủ nhiệm nhấn tạo key -> thành viên nhập key để tự tạo username/password -> trùng thì đổi 
+                username, tạo xong key sẽ bị hủy, và tài khoảng add thành công vào bộ quản lí tài khoảng
+                của chủ nhiệm
+trong thành viên, có thành viên, group, data book
+
+Cách check-in : 
+	1. Đầu giờ tạo mã -> nhập mã -> check-in đầu giừ
+	2.giữa giờ và cuối giờ tương tự. Mã ngẫu nhiên.

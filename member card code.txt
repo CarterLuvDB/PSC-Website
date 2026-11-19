@@ -1,0 +1,51 @@
+
+
+                        <button class="member-card">
+
+                            <!-- BÊN TRÁI -->
+                            <div class="member-left">
+
+                                <div class="member-avatar-area">
+                                    <div class="member-avatar">
+                                        <img src="images/non-avatar.png" alt="Avatar">
+                                        <span class="member-status offline"></span>
+                                    </div>
+                                </div>
+
+                                <div class="member-basic-info">
+                                    <div class="member-age-gender">
+                                        <span>16t</span>
+                                        <span>♂</span>
+                                    </div>
+
+                                    <div class="member-generation">
+                                        Gen 5
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- BÊN PHẢI -->
+                            <div class="member-details">
+
+                                <div class="member-name">
+                                    Nguyễn Văn A
+                                </div>
+
+                                <div class="member-divider"></div>
+
+                                <div class="member-role">
+                                    Thành viên · Chuyên môn
+                                </div>
+
+                                <div class="member-bio">
+                                    Mình thích tranh biện và muốn phát triển khả năng nói trước đám đông.
+                                </div>
+
+                            </div>
+
+                        </button>
+
+                    </div>
+
