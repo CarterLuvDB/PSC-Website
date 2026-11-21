@@ -107,15 +107,17 @@ body {
 .ad-image {
     position: absolute;
     inset: 0;
+
     width: 100%;
     height: 100%;
+
     object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.75s ease;
+
+    display: none;
 }
 
 .ad-image.active {
-    opacity: 1;
+    display: block;
 }
 
 .ad-selector {
