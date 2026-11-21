@@ -368,3 +368,12 @@
 .filter-menu input {
     cursor: pointer;
 }
+
+/* Members sub tabs */
+.members-tab-content {
+  display: none;
+}
+
+.members-tab-content.active {
+  display: block;
+}

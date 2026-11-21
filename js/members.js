@@ -434,6 +434,51 @@ resetButton.addEventListener("click", () => {
 
 });
 
+// ================================
+// MEMBERS SUB TABS
+// ================================
+
+const membersTabs = document.querySelectorAll(".members-tab");
+const membersTabContents = document.querySelectorAll(
+  ".members-tab-content"
+);
+
+function activateMembersTab(tabName, save = true) {
+  const targetTab = [...membersTabs].find(
+    tab => tab.dataset.membersTab === tabName
+  );
+
+  if (!targetTab) return;
+
+  membersTabs.forEach(tab => {
+    tab.classList.toggle("active", tab === targetTab);
+  });
+
+  membersTabContents.forEach(content => {
+    content.classList.toggle(
+      "active",
+      content.dataset.membersContent === tabName
+    );
+  });
+
+  if (save) {
+    localStorage.setItem("members-active-tab", tabName);
+  }
+}
+
+membersTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    activateMembersTab(tab.dataset.membersTab);
+  });
+});
+
+const savedMembersTab =
+  localStorage.getItem("members-active-tab");
+
+activateMembersTab(
+  savedMembersTab || membersTabs[0]?.dataset.membersTab,
+  false
+);
 
 // ================================
 // KHỞI TẠO

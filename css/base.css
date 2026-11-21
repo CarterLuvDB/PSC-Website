@@ -7,3 +7,8 @@ body {
     font-family: Arial, sans-serif;
     background: white;
 }
+
+/* Prevent tab flash while page is loading */
+html.tab-loading .tab-content {
+  display: none !important;
+}

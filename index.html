@@ -57,16 +57,14 @@
 
         <!-- THANH TAB -->
         <nav class="navigation">
-
+            
             <div class="menu">
-
-                <a href="#">Home</a>
-                <a href="#" class="active">Members</a>
-                <a href="#">Check-in</a>
+                <a href="#" data-tab="home">Home</a>
+                <a href="#" class="active" data-tab="members">Members</a>
+                <a href="#" data-tab="checkin">Check-in</a>
                 <!-- <a href="#">Task</a>
                 <a href="#">Resources</a>
                 <a href="#">Profile</a> -->
-
             </div>
 
         </nav>
@@ -76,164 +74,231 @@
 
 
     <main>
+        <section
+            class="tab-content"
+            data-tab-content="home"
+        >
+            <div class="page">
+                <h1>Home</h1>
+                <p>Trang chủ PSC sẽ được xây dựng sau</p>
+            </div>
+        </section>
+    <section 
+        class="tab-content active" 
+        data-tab-content="members"
+    >
         <section class="members-page">
 
             <!-- 3 mục phụ -->
             <div class="members-tabs">
-                <button class="members-tab active">Tổng thành viên</button>
-                <button class="members-tab">Group</button>
-                <button class="members-tab">Data book</button>
-            </div>
+                <div class="members-tabs">
+                    <button
+                        class="members-tab active"
+                        data-members-tab="all-members"
+                    >
+                        Tổng thành viên
+                    </button>
 
-            <!-- Thanh công cụ -->
-            <div class="members-toolbar">
+                    <button
+                        class="members-tab"
+                        data-members-tab="group"
+                    >
+                        Group
+                    </button>
 
-                <div class="search-box">
-                    <input type="text" placeholder="Tìm kiếm thành viên...">
-                    <button class="search-button">⌕</button>
+                    <button
+                        class="members-tab"
+                        data-members-tab="data-book"
+                    >
+                        Data book
+                    </button>
                 </div>
-
-                <button class="manage-button">
-                    Quản lí
-                </button>
-
             </div>
+            <div
+                class="members-tab-content active"
+                data-members-content="all-members"
+            >
+                <!-- Thanh công cụ -->
+                <div class="members-toolbar">
 
-            <!-- Danh sách thành viên -->
-            <div class="members-content">
-
-                <div class="members-container">
-
-                    <div class="members-header">
-                        <span>All members</span>
-                        <span class="member-count">(32 Members)</span>
+                    <div class="search-box">
+                        <input type="text" placeholder="Tìm kiếm thành viên...">
+                        <button class="search-button">⌕</button>
                     </div>
 
-                    <div class="members-list" id="members-list">
-
-                    </div>  
-
-                </div>
-
-                <!-- FILTER -->
-                <div class="members-filter">
-
-                    <div class="filter-title">Filter</div>
-
-                    <div class="filter-dropdown">
-
-                        <button class="filter-option" id="gen-filter-button">
-                            <span>Gen</span>
-                            <span>▼</span>
-                        </button>
-
-                        <div class="filter-menu" id="gen-filter-menu">
-                            <label><input type="checkbox" value="1"> Gen 1</label>
-                            <label><input type="checkbox" value="2"> Gen 2</label>
-                            <label><input type="checkbox" value="3"> Gen 3</label>
-                            <label><input type="checkbox" value="4"> Gen 4</label>
-                            <label><input type="checkbox" value="4.5"> Gen 4.5</label>
-                            <label><input type="checkbox" value="5"> Gen 5</label>
-                            <label><input type="checkbox" value="5.5"> Gen 5.5</label>
-                            <label><input type="checkbox" value="6"> Gen 6</label>
-                            <label><input type="checkbox" value="6.5"> Gen 6.5</label>
-                        </div>
-
-                    </div>
-                    
-                    <div class="filter-dropdown">
-
-                        <button class="filter-option" id="age-filter-button">
-                            <span>Tuổi</span>
-                            <span>▼</span>
-                        </button>
-
-                        <div class="filter-menu" id="age-filter-menu">
-                            <label><input type="checkbox" value="14"> 14</label>
-                            <label><input type="checkbox" value="15"> 15</label>
-                            <label><input type="checkbox" value="16"> 16</label>
-                            <label><input type="checkbox" value="17"> 17</label>
-                            <label><input type="checkbox" value="18"> 18</label>
-                            <label><input type="checkbox" value="19+"> 19+</label>
-                        </div>
-
-                    </div>
-
-                    <div class="filter-dropdown">
-
-                        <button class="filter-option" id="gender-filter-button">
-                            <span>Giới tính</span>
-                            <span>▼</span>
-                        </button>
-
-                        <div class="filter-menu" id="gender-filter-menu">
-                            <label><input type="checkbox" value="Nam"> Nam</label>
-                            <label><input type="checkbox" value="Nữ"> Nữ</label>
-                        </div>
-
-                    </div>
-
-                    <div class="filter-dropdown">
-
-                        <button class="filter-option" id="role-filter-button">
-                            <span>Chức vụ</span>
-                            <span>▼</span>
-                        </button>   
-
-                        <div class="filter-menu" id="role-filter-menu">
-                            <label><input type="checkbox" value="Cựu TV"> (bao gồm cựu TV)</label>
-                            <label><input type="checkbox" value="Chủ nhiệm"> Chủ nhiệm</label>
-                            <label><input type="checkbox" value="Trưởng ban"> Trưởng ban</label>
-                            <label><input type="checkbox" value="Phó ban"> Phó ban</label>
-                            <label><input type="checkbox" value="Thành viên"> Thành viên</label>
-                        </div>
-
-                    </div>
-
-                    <div class="filter-dropdown">
-
-                        <button class="filter-option">
-                            <span>Ban</span>
-                            <span>▼</span>
-                        </button>
-
-                        <div class="filter-menu">
-                            <label>
-                                <input type="checkbox" value="Hậu cần">
-                                Hậu cần
-                            </label>
-
-                            <label>
-                                <input type="checkbox" value="Chuyên môn">
-                                Chuyên môn
-                            </label>
-
-                            <label>
-                                <input type="checkbox" value="Hình ảnh">
-                                Hình ảnh
-                            </label>
-
-                            <label>
-                                <input type="checkbox" value="Điều hành">
-                                Điều hành
-                            </label>
-                        </div>
-
-                    </div>
-
-                    <div class="filter-divider"></div>
-
-                    <div class="filter-result" id="filter-result">
-                        3 members found
-                    </div>
-
-                    <button class="reset-filter">
-                        Reset filter
+                    <button class="manage-button">
+                        Quản lí
                     </button>
 
                 </div>
+
+                <!-- Danh sách thành viên -->
+                <div class="members-content">
+
+                    <div class="members-container">
+
+                        <div class="members-header">
+                            <span>All members</span>
+                            <span class="member-count">(32 Members)</span>
+                        </div>
+
+                        <div class="members-list" id="members-list">
+
+                        </div>  
+
+                    </div>
+
+                    <!-- FILTER -->
+                    <div class="members-filter">
+
+                        <div class="filter-title">Filter</div>
+
+                        <div class="filter-dropdown">
+
+                            <button class="filter-option" id="gen-filter-button">
+                                <span>Gen</span>
+                                <span>▼</span>
+                            </button>
+
+                            <div class="filter-menu" id="gen-filter-menu">
+                                <label><input type="checkbox" value="1"> Gen 1</label>
+                                <label><input type="checkbox" value="2"> Gen 2</label>
+                                <label><input type="checkbox" value="3"> Gen 3</label>
+                                <label><input type="checkbox" value="4"> Gen 4</label>
+                                <label><input type="checkbox" value="4.5"> Gen 4.5</label>
+                                <label><input type="checkbox" value="5"> Gen 5</label>
+                                <label><input type="checkbox" value="5.5"> Gen 5.5</label>
+                                <label><input type="checkbox" value="6"> Gen 6</label>
+                                <label><input type="checkbox" value="6.5"> Gen 6.5</label>
+                            </div>
+
+                        </div>
+                        
+                        <div class="filter-dropdown">
+
+                            <button class="filter-option" id="age-filter-button">
+                                <span>Tuổi</span>
+                                <span>▼</span>
+                            </button>
+
+                            <div class="filter-menu" id="age-filter-menu">
+                                <label><input type="checkbox" value="14"> 14</label>
+                                <label><input type="checkbox" value="15"> 15</label>
+                                <label><input type="checkbox" value="16"> 16</label>
+                                <label><input type="checkbox" value="17"> 17</label>
+                                <label><input type="checkbox" value="18"> 18</label>
+                                <label><input type="checkbox" value="19+"> 19+</label>
+                            </div>
+
+                        </div>
+
+                        <div class="filter-dropdown">
+
+                            <button class="filter-option" id="gender-filter-button">
+                                <span>Giới tính</span>
+                                <span>▼</span>
+                            </button>
+
+                            <div class="filter-menu" id="gender-filter-menu">
+                                <label><input type="checkbox" value="Nam"> Nam</label>
+                                <label><input type="checkbox" value="Nữ"> Nữ</label>
+                            </div>
+
+                        </div>
+
+                        <div class="filter-dropdown">
+
+                            <button class="filter-option" id="role-filter-button">
+                                <span>Chức vụ</span>
+                                <span>▼</span>
+                            </button>   
+
+                            <div class="filter-menu" id="role-filter-menu">
+                                <label><input type="checkbox" value="Cựu TV"> (bao gồm cựu TV)</label>
+                                <label><input type="checkbox" value="Chủ nhiệm"> Chủ nhiệm</label>
+                                <label><input type="checkbox" value="Trưởng ban"> Trưởng ban</label>
+                                <label><input type="checkbox" value="Phó ban"> Phó ban</label>
+                                <label><input type="checkbox" value="Thành viên"> Thành viên</label>
+                            </div>
+
+                        </div>
+
+                        <div class="filter-dropdown">
+
+                            <button class="filter-option">
+                                <span>Ban</span>
+                                <span>▼</span>
+                            </button>
+
+                            <div class="filter-menu">
+                                <label>
+                                    <input type="checkbox" value="Hậu cần">
+                                    Hậu cần
+                                </label>
+
+                                <label>
+                                    <input type="checkbox" value="Chuyên môn">
+                                    Chuyên môn
+                                </label>
+
+                                <label>
+                                    <input type="checkbox" value="Hình ảnh">
+                                    Hình ảnh
+                                </label>
+
+                                <label>
+                                    <input type="checkbox" value="Điều hành">
+                                    Điều hành
+                                </label>
+                            </div>
+
+                        </div>
+
+                        <div class="filter-divider"></div>
+
+                        <div class="filter-result" id="filter-result">
+                            3 members found
+                        </div>
+
+                        <button class="reset-filter">
+                            Reset filter
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+            <!-- GROUP -->
+            <div
+                class="members-tab-content"
+                data-members-content="group"
+            >
+                <div class="page">
+                    <h1>Group</h1>
+                    <p>Group sẽ được xây dựng sau.</p>
+                </div>
+            </div>
+
+            <!-- DATA BOOK -->
+            <div
+                class="members-tab-content"
+                data-members-content="data-book"
+            >
+                <div class="page">
+                    <h1>Data book</h1>
+                    <p>Data book sẽ được xây dựng sau.</p>
+                </div>
             </div>
         </section>
+    </section>
+    <section
+    class="tab-content"
+    data-tab-content="checkin"
+    >
+        <div class="page">
+            <h1>Check-in</h1>
+            <p>Check-in sẽ được xây dựng sau.</p>
+        </div>
+    </section>
     </main>
 
 
