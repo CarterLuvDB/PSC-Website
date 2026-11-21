@@ -1,24 +1,14 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>PSC - Tạo tài khoản</title>
+    <link rel="icon" type="image/png" href="../images/favicon.png">
 
-    <link
-        rel="stylesheet"
-        href="create-account.css"
-    >
-
+    <link rel="stylesheet" href="create-account.css">
 </head>
-
 
 <body>
 
@@ -26,45 +16,54 @@
 
         <div class="create-account-box">
 
-
+            <!-- HEADER -->
             <div class="create-account-header">
 
-                <div class="logo">
-                    PSC
-                </div>
+                <img
+                    src="../images/logo.png"
+                    alt="PSC Logo"
+                >
 
                 <div class="club-name">
-                    Public Speaking Club
+                    <div class="club-main">
+                        Public Speaking Club
+                    </div>
+
+                    <div class="club-sub">
+                        PSC - THPT Nguyễn Hữu Cầu
+                    </div>
                 </div>
 
             </div>
 
 
+            <!-- CONTENT -->
             <div class="create-account-content">
 
+                <div class="page-title">
+                    <div class="title-main">
+                        Tạo tài khoản
+                    </div>
 
-                <h1>
-                    Tạo tài khoản
-                </h1>
-
-
-                <p class="subtitle">
-                    Tạo tài khoản PSC
-                </p>
+                    <div class="title-sub">
+                        Tạo tài khoản PSC của bạn
+                    </div>
+                </div>
 
 
                 <form id="create-account-form">
 
 
-                    <div class="input-group">
+                    <!-- USERNAME -->
+                    <div class="form-group">
 
                         <label for="username">
                             Username
                         </label>
 
                         <input
-                            id="username"
                             type="text"
+                            id="username"
                             placeholder="Nhập Username"
                             autocomplete="username"
                             required
@@ -73,49 +72,160 @@
                     </div>
 
 
-                    <div class="input-group">
+                    <!-- PASSWORD -->
+                    <div class="form-group">
 
                         <label for="password">
                             Mật khẩu
                         </label>
 
-                        <input
-                            id="password"
-                            type="password"
-                            placeholder="Nhập mật khẩu"
-                            autocomplete="new-password"
-                            required
-                        >
+                        <div class="password-input">
+
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="Nhập mật khẩu"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-target="password"
+                                aria-label="Hiện mật khẩu"
+                            >
+                                <img
+                                    src="../images/icon/hide.png"
+                                    alt="Hiện mật khẩu"
+                                >
+                            </button>
+
+                        </div>
 
                     </div>
 
 
-                    <div class="input-group">
+                    <!-- CONFIRM PASSWORD -->
+                    <div class="form-group">
 
                         <label for="confirm-password">
                             Nhập lại mật khẩu
                         </label>
 
+                        <div class="password-input">
+
+                            <input
+                                type="password"
+                                id="confirm-password"
+                                placeholder="Nhập lại mật khẩu"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-target="confirm-password"
+                                aria-label="Hiện mật khẩu"
+                            >
+                                <img
+                                    src="../images/icon/hide.png"
+                                    alt="Hiện mật khẩu"
+                                >
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FULL NAME -->
+                    <div class="form-group">
+
+                        <label for="full-name">
+                            Họ và tên
+                        </label>
+
                         <input
-                            id="confirm-password"
-                            type="password"
-                            placeholder="Nhập lại mật khẩu"
-                            autocomplete="new-password"
+                            type="text"
+                            id="full-name"
+                            placeholder="Nhập họ và tên"
+                            autocomplete="name"
                             required
                         >
 
                     </div>
 
 
-                    <p
+                    <!-- GENDER -->
+                    <div class="form-group">
+
+                        <label>
+                            Giới tính
+                        </label>
+
+                        <div class="gender-options">
+
+                            <label class="gender-option">
+
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="Nam"
+                                    required
+                                >
+
+                                <span>Nam</span>
+
+                            </label>
+
+
+                            <label class="gender-option">
+
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="Nữ"
+                                >
+
+                                <span>Nữ</span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DATE OF BIRTH -->
+                    <div class="form-group">
+
+                        <label for="date-of-birth">
+                            Ngày sinh
+                        </label>
+
+                        <input
+                            type="date"
+                            id="date-of-birth"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- MESSAGE -->
+                    <div
                         id="create-account-message"
                         class="message"
-                    ></p>
+                    ></div>
 
 
+                    <!-- BUTTON -->
                     <button
-                        id="create-account-button"
                         type="submit"
+                        class="create-account-button"
+                        id="create-account-button"
                     >
                         Tạo tài khoản
                     </button>
@@ -124,13 +234,21 @@
                 </form>
 
 
-                <a
-                    class="back-to-login"
-                    href="../login.html"
-                >
-                    ← Quay lại đăng nhập
-                </a>
+                <!-- NOTE -->
+                <div class="account-note">
+                    Một số thông tin khác có thể được bổ sung
+                    trong Profile sau này.
+                </div>
 
+
+                <!-- BACK -->
+                <div class="back-to-login">
+
+                    <a href="../login.html">
+                        ← Quay lại đăng nhập
+                    </a>
+
+                </div>
 
             </div>
 
@@ -142,5 +260,4 @@
     <script src="create-account.js"></script>
 
 </body>
-
 </html>

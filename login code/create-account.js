@@ -1,11 +1,17 @@
 const form =
-    document.getElementById("create-account-form");
+    document.getElementById(
+        "create-account-form"
+    );
 
 const message =
-    document.getElementById("create-account-message");
+    document.getElementById(
+        "create-account-message"
+    );
 
 const button =
-    document.getElementById("create-account-button");
+    document.getElementById(
+        "create-account-button"
+    );
 
 
 const CREATE_ACCOUNT_URL =
@@ -22,211 +28,355 @@ const key =
     ) || "";
 
 
-// Nếu không có Key
+// =========================
+// CHECK KEY
+// =========================
+
 if (!key) {
-
-    message.textContent =
-        "Không có Key. Vui lòng quay lại Login.";
-
-    message.classList.add("error");
-
     button.disabled = true;
-
 }
 
 
 // =========================
+// SHOW / HIDE PASSWORD
+// =========================
+
+const passwordToggles =
+    document.querySelectorAll(
+        ".password-toggle"
+    );
+
+
+passwordToggles.forEach(
+    (toggle) => {
+
+        toggle.addEventListener(
+            "click",
+            () => {
+
+                const targetId =
+                    toggle.dataset.target;
+
+                const input =
+                    document.getElementById(
+                        targetId
+                    );
+
+                const icon =
+                    toggle.querySelector("img");
+
+                if (!input || !icon) {
+                    return;
+                }
+
+
+                if (
+                    input.type === "password"
+                ) {
+
+                    // Hiện mật khẩu
+                    input.type = "text";
+
+                    icon.src =
+                        "../images/icon/view.png";
+
+                    icon.alt =
+                        "Ẩn mật khẩu";
+
+                    toggle.setAttribute(
+                        "aria-label",
+                        "Ẩn mật khẩu"
+                    );
+
+                } else {
+
+                    // Ẩn mật khẩu
+                    input.type = "password";
+
+                    icon.src =
+                        "../images/icon/hide.png";
+
+                    icon.alt =
+                        "Hiện mật khẩu";
+
+                    toggle.setAttribute(
+                        "aria-label",
+                        "Hiện mật khẩu"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+// =========================
 // TẠO TÀI KHOẢN
 // =========================
 
-form.addEventListener("submit", async (event) => {
+form.addEventListener(
+    "submit",
+    async (event) => {
 
-    event.preventDefault();
-
-
-    if (!key) {
-
-        message.textContent =
-            "Không có Key. Vui lòng quay lại Login.";
-
-        message.className = "message error";
-
-        return;
-
-    }
+        event.preventDefault();
 
 
-    const username =
-        document
-            .getElementById("username")
-            .value
-            .trim();
+        if (!key) {
+
+            message.textContent =
+                "Không có Key. Vui lòng quay lại Login.";
+
+            message.className =
+                "message error";
+
+            return;
+
+        }
 
 
-    const password =
-        document
-            .getElementById("password")
-            .value;
+        const username =
+            document
+                .getElementById(
+                    "username"
+                )
+                .value
+                .trim();
 
 
-    const confirmPassword =
-        document
-            .getElementById("confirm-password")
-            .value;
+        const password =
+            document.getElementById(
+                "password"
+            ).value;
 
 
-    message.textContent = "";
-    message.className = "message";
+        const confirmPassword =
+            document.getElementById(
+                "confirm-password"
+            ).value;
 
 
-    // =========================
-    // KIỂM TRA THÔNG TIN
-    // =========================
-
-    if (!username || !password || !confirmPassword) {
-
-        message.textContent =
-            "Vui lòng nhập đầy đủ thông tin.";
-
-        message.classList.add("error");
-
-        return;
-
-    }
+        const fullName =
+            document
+                .getElementById(
+                    "full-name"
+                )
+                .value
+                .trim();
 
 
-    if (password !== confirmPassword) {
-
-        message.textContent =
-            "Mật khẩu nhập lại không khớp.";
-
-        message.classList.add("error");
-
-        return;
-
-    }
-
-
-    if (username.length < 3) {
-
-        message.textContent =
-            "Username phải có ít nhất 3 ký tự.";
-
-        message.classList.add("error");
-
-        return;
-
-    }
-
-
-    if (password.length < 6) {
-
-        message.textContent =
-            "Mật khẩu phải có ít nhất 6 ký tự.";
-
-        message.classList.add("error");
-
-        return;
-
-    }
-
-
-    // =========================
-    // TẠO TÀI KHOẢN
-    // =========================
-
-    button.disabled = true;
-
-    button.textContent =
-        "Đang tạo tài khoản...";
-
-
-    try {
-
-        const response =
-            await fetch(
-                CREATE_ACCOUNT_URL,
-                {
-
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-
-                        key,
-                        username,
-                        password
-
-                    })
-
-                }
+        const genderInput =
+            document.querySelector(
+                'input[name="gender"]:checked'
             );
 
 
-        const data =
-            await response.json();
+        const gender =
+            genderInput
+                ? genderInput.value
+                : "";
 
 
-        if (!response.ok) {
+        const dateOfBirth =
+            document.getElementById(
+                "date-of-birth"
+            ).value;
 
-            throw new Error(
-                data.error ||
-                "Không thể tạo tài khoản."
+
+        message.textContent = "";
+
+        message.className =
+            "message";
+
+
+        // =========================
+        // VALIDATION
+        // =========================
+
+        if (
+            !username ||
+            !password ||
+            !confirmPassword ||
+            !fullName ||
+            !gender ||
+            !dateOfBirth
+        ) {
+
+            message.textContent =
+                "Vui lòng nhập đầy đủ thông tin.";
+
+            message.classList.add(
+                "error"
             );
+
+            return;
+
+        }
+
+
+        if (
+            !/^[A-Za-z0-9._-]{3,30}$/.test(
+                username
+            )
+        ) {
+
+            message.textContent =
+                "Username chỉ được dùng chữ, số, dấu chấm, gạch dưới hoặc gạch ngang; dài 3-30 ký tự.";
+
+            message.classList.add(
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (
+            password.length < 6
+        ) {
+
+            message.textContent =
+                "Mật khẩu phải có ít nhất 6 ký tự.";
+
+            message.classList.add(
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (
+            password !==
+            confirmPassword
+        ) {
+
+            message.textContent =
+                "Mật khẩu nhập lại không khớp.";
+
+            message.classList.add(
+                "error"
+            );
+
+            return;
 
         }
 
 
         // =========================
-        // THÀNH CÔNG
+        // SUBMIT
         // =========================
 
-        message.textContent =
-            "Tạo tài khoản thành công! Đang chuyển đến đăng nhập...";
-
-        message.classList.add("success");
-
-
-        // Xóa Key sau khi dùng
-        sessionStorage.removeItem(
-            "psc-create-account-key"
-        );
-
-
-        form.reset();
-
-
-        setTimeout(() => {
-
-            window.location.href =
-                "../login.html";
-
-        }, 1200);
-
-
-    } catch (error) {
-
-        console.error(error);
-
-
-        message.textContent =
-            error.message ||
-            "Có lỗi xảy ra. Vui lòng thử lại.";
-
-        message.classList.add("error");
-
-
-    } finally {
-
-        button.disabled = false;
+        button.disabled = true;
 
         button.textContent =
-            "Tạo tài khoản";
+            "Đang tạo tài khoản...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    CREATE_ACCOUNT_URL,
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                key,
+
+                                username,
+
+                                password,
+
+                                full_name:
+                                    fullName,
+
+                                gender,
+
+                                date_of_birth:
+                                    dateOfBirth
+
+                            })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    "Không thể tạo tài khoản."
+                );
+
+            }
+
+
+            message.textContent =
+                "Tạo tài khoản thành công! Đang chuyển đến đăng nhập...";
+
+            message.classList.add(
+                "success"
+            );
+
+
+            sessionStorage.removeItem(
+                "psc-create-account-key"
+            );
+
+
+            form.reset();
+
+
+            setTimeout(
+                () => {
+
+                    window.location.href =
+                        "../login.html";
+
+                },
+                1200
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+
+            message.textContent =
+                error.message ||
+                "Có lỗi xảy ra. Vui lòng thử lại.";
+
+            message.classList.add(
+                "error"
+            );
+
+
+        } finally {
+
+            button.disabled = false;
+
+            button.textContent =
+                "Tạo tài khoản";
+
+        }
 
     }
-
-});
+);
