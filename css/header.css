@@ -103,21 +103,157 @@
 }
 
 
-/* TÀI KHOẢN */
+/* =========================
+   TÀI KHOẢN
+========================= */
 
-.account {
-    height: 42px;
+.account-area {
+    position: relative;
+}
 
-    padding: 0 24px;
+
+/* NÚT TÀI KHOẢN */
+
+.account-button {
+    min-width: 175px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 14px 0 17px;
 
     border: 1px solid #e0e0e0;
     border-radius: 12px;
 
     background: white;
-    color: #b71c1c;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.account-button:hover {
+    border-color: #c62828;
+
+    box-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+
+/* THÔNG TIN TÀI KHOẢN */
+
+.account-info {
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 3px;
+}
+
+
+/* HỌ VÀ TÊN */
+
+.account-full-name {
+    color: #333;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    line-height: 1.1;
+}
+
+
+/* USERNAME */
+
+.account-username {
+    color: #888;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    line-height: 1.1;
+}
+
+
+/* ICON 3 GẠCH */
+
+.account-more {
+    color: #777;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    margin-left: 14px;
+}
+
+/* =========================
+   ACCOUNT DROPDOWN
+========================= */
+
+.account-dropdown {
+    position: absolute;
+
+    top: calc(100% + 8px);
+    right: 0;
+
+    min-width: 175px;
+
+    padding: 6px;
+
+    background: white;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.10);
+
+    display: none;
+
+    z-index: 100;
+}
+
+
+.account-dropdown.active {
+    display: block;
+}
+
+
+/* ĐĂNG XUẤT */
+
+.logout-button {
+    width: 100%;
+    height: 40px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #c62828;
 
     font-size: 14px;
     font-weight: 600;
 
+    text-align: left;
+
+    padding: 0 12px;
+
     cursor: pointer;
+
+    transition:
+        background 0.2s ease;
+}
+
+
+.logout-button:hover {
+    background: #fff3f3;
 }

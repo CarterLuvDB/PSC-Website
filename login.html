@@ -51,7 +51,11 @@
                     <div class="login-pad">
 
                     <div class="input-zone">
-                            <input type="text" placeholder="Username">
+                            <input
+                            id="username"
+                            type="text"
+                            placeholder="Username"
+                        >
                         </div>
 
                         <div class="input-zone password-zone">
@@ -65,8 +69,8 @@
                         <div class="forgot-password">
                             <a href="#">Quên mật khẩu?</a>
                         </div>
-
-                        <button class="login-button">
+                        
+                        <button class="login-button" id="login-button">
                             Đăng nhập
                         </button>
 
@@ -93,6 +97,7 @@
 
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="login code/login.js"></script>
 </body>
 </html>
