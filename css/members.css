@@ -2,7 +2,7 @@
     width: 100%;
     min-height: calc(100vh - 70px);
     padding: 5px 40px 30px;
-    background: white;
+    background: rgb(249, 252, 255);
 }
 
 /* 3 mục phụ */
@@ -16,7 +16,7 @@
 
 .members-tab {
     border: none;
-    background: transparent;
+    background: #ffe4e4;
 
     padding: 10px 18px;
 
@@ -30,12 +30,18 @@
 }
 
 .members-tab:hover {
-    background: #f3f3f3;
+    background: #ffcaca;
     transform: translateY(-2px);
 }
 
 .members-tab.active {
-    background: #f0f0f0;
+    background: linear-gradient(
+            135deg,
+            #ff5151,
+            #fd7e7e,
+            #ffcbe9
+        );
+    color: white;
     font-weight: 700;
 }
 
@@ -376,4 +382,8 @@
 
 .members-tab-content.active {
   display: block;
+}
+
+.members-empty {
+    color: #ffffff;
 }

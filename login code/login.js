@@ -10,42 +10,70 @@ let autoSlide;
 // =========================
 
 function showAd(index) {
-    images.forEach(img => img.classList.remove("active"));
-    tabs.forEach(tab => tab.classList.remove("active"));
+
+    images.forEach(img =>
+        img.classList.remove("active")
+    );
+
+    tabs.forEach(tab =>
+        tab.classList.remove("active")
+    );
+
 
     if (images[index] && tabs[index]) {
+
         images[index].classList.add("active");
+
         tabs[index].classList.add("active");
+
     }
+
 
     currentIndex = index;
 }
 
 
 function startAutoSlide() {
+
     clearInterval(autoSlide);
+
 
     if (images.length <= 1) {
         return;
     }
 
+
     autoSlide = setInterval(() => {
-        let nextIndex = currentIndex + 1;
+
+        let nextIndex =
+            currentIndex + 1;
+
 
         if (nextIndex >= images.length) {
             nextIndex = 0;
         }
 
+
         showAd(nextIndex);
+
     }, 6000);
+
 }
 
 
 tabs.forEach((tab, index) => {
-    tab.addEventListener("mouseenter", () => {
-        showAd(index);
-        startAutoSlide();
-    });
+
+    tab.addEventListener(
+        "mouseenter",
+        () => {
+
+            showAd(index);
+
+            startAutoSlide();
+
+        }
+    );
+
 });
 
 
@@ -63,37 +91,48 @@ const showPasswordButton =
     document.getElementById("show-password");
 
 
-if (passwordInput && showPasswordButton) {
+if (
+    passwordInput &&
+    showPasswordButton
+) {
 
     const eyeIcon =
         showPasswordButton.querySelector("img");
 
 
-    showPasswordButton.addEventListener("click", () => {
+    showPasswordButton.addEventListener(
+        "click",
+        () => {
 
-        if (passwordInput.type === "password") {
+            if (
+                passwordInput.type ===
+                "password"
+            ) {
 
-            passwordInput.type = "text";
+                passwordInput.type =
+                    "text";
 
-            eyeIcon.src =
-                "images/icon/hide.png";
+                eyeIcon.src =
+                    "images/icon/hide.png";
 
-            eyeIcon.alt =
-                "Ẩn mật khẩu";
+                eyeIcon.alt =
+                    "Ẩn mật khẩu";
 
-        } else {
+            } else {
 
-            passwordInput.type = "password";
+                passwordInput.type =
+                    "password";
 
-            eyeIcon.src =
-                "images/icon/view.png";
+                eyeIcon.src =
+                    "images/icon/view.png";
 
-            eyeIcon.alt =
-                "Hiện mật khẩu";
+                eyeIcon.alt =
+                    "Hiện mật khẩu";
+
+            }
 
         }
-
-    });
+    );
 
 }
 
@@ -118,7 +157,7 @@ const supabaseClient =
 
 
 // =========================
-// ĐĂNG NHẬP
+// CÁC ELEMENT LOGIN
 // =========================
 
 const loginButton =
@@ -128,256 +167,301 @@ const usernameInput =
     document.getElementById("username");
 
 
-if (loginButton) {
+// =========================
+// HÀM ĐĂNG NHẬP
+// =========================
 
-    loginButton.addEventListener(
-        "click",
-        async () => {
+async function handleLogin() {
 
-            const rawUsername =
-                usernameInput.value.trim();
+    const rawUsername =
+        usernameInput.value.trim();
 
-            const password =
-                passwordInput.value;
-
-
-            // =========================
-            // KIỂM TRA KEY TẠO TÀI KHOẢN
-            // =========================
-
-            if (
-                rawUsername
-                    .toLowerCase()
-                    .startsWith("key=")
-            ) {
-
-                const key =
-                    rawUsername
-                        .slice(4)
-                        .trim();
+    const password =
+        passwordInput.value;
 
 
-                // Key phải đúng 6 ký tự
-                if (
-                    !/^[A-Za-z0-9]{6}$/.test(key)
-                ) {
+    // =========================
+    // KIỂM TRA KEY TẠO TÀI KHOẢN
+    // =========================
 
-                    alert(
-                        "Key phải gồm đúng 6 ký tự chữ và số."
-                    );
+    if (
+        rawUsername
+            .toLowerCase()
+            .startsWith("key=")
+    ) {
 
-                    return;
-                }
-
-
-                loginButton.disabled = true;
-
-                loginButton.textContent =
-                    "Đang kiểm tra Key...";
+        const key =
+            rawUsername
+                .slice(4)
+                .trim();
 
 
-                try {
+        // Key phải đúng 6 ký tự
+        if (
+            !/^[A-Za-z0-9]{6}$/.test(key)
+        ) {
 
-                    console.log(
-                        "1. Bắt đầu kiểm tra Key"
-                    );
+            alert(
+                "Key phải gồm đúng 6 ký tự chữ và số."
+            );
 
-
-                    const response =
-                        await fetch(
-                            "https://butfmjiweebysxnebauh.supabase.co/functions/v1/check-key",
-                            {
-                                method: "POST",
-
-                                headers: {
-                                    "Content-Type":
-                                        "application/json",
-
-                                    "apikey":
-                                        SUPABASE_KEY
-                                },
-
-                                body: JSON.stringify({
-                                    key
-                                })
-                            }
-                        );
+            return;
+        }
 
 
-                    console.log(
-                        "2. Server đã phản hồi:",
-                        response.status
-                    );
+        loginButton.disabled = true;
+
+        loginButton.textContent =
+            "Đang kiểm tra Key...";
 
 
-                    const text =
-                        await response.text();
+        try {
+
+            console.log(
+                "1. Bắt đầu kiểm tra Key"
+            );
 
 
-                    console.log(
-                        "3. Server trả về:",
-                        text
-                    );
+            const response =
+                await fetch(
+                    "https://butfmjiweebysxnebauh.supabase.co/functions/v1/check-key",
+                    {
+                        method: "POST",
 
+                        headers: {
+                            "Content-Type":
+                                "application/json",
 
-                    let data;
+                            "apikey":
+                                SUPABASE_KEY
+                        },
 
-
-                    try {
-
-                        data =
-                            JSON.parse(text);
-
-                    } catch {
-
-                        throw new Error(
-                            "Server trả về dữ liệu không hợp lệ."
-                        );
-
+                        body: JSON.stringify({
+                            key
+                        })
                     }
+                );
 
 
-                    if (
-                        !response.ok ||
-                        !data.valid
-                    ) {
-
-                        alert(
-                            "Key không hợp lệ hoặc đã được sử dụng."
-                        );
-
-                        return;
-                    }
+            console.log(
+                "2. Server đã phản hồi:",
+                response.status
+            );
 
 
-                    console.log(
-                        "4. Key hợp lệ"
-                    );
+            const text =
+                await response.text();
 
 
-                    sessionStorage.setItem(
-                        "psc-create-account-key",
-                        key
-                    );
+            console.log(
+                "3. Server trả về:",
+                text
+            );
 
 
-                    window.location.href =
-                        "login code/create-account.html";
+            let data;
 
 
-                    return;
+            try {
 
+                data =
+                    JSON.parse(text);
 
-                } catch (error) {
+            } catch {
 
-                    console.error(
-                        "CHECK KEY ERROR:",
-                        error
-                    );
-
-
-                    alert(
-                        "Không thể kiểm tra Key. Vui lòng thử lại."
-                    );
-
-
-                    return;
-
-
-                } finally {
-
-                    loginButton.disabled = false;
-
-                    loginButton.textContent =
-                        "Đăng nhập";
-
-                }
+                throw new Error(
+                    "Server trả về dữ liệu không hợp lệ."
+                );
 
             }
 
 
-            // =========================
-            // ĐĂNG NHẬP BÌNH THƯỜNG
-            // =========================
-
-            const username =
-                rawUsername.toLowerCase();
-
-
-            if (!username || !password) {
+            if (
+                !response.ok ||
+                !data.valid
+            ) {
 
                 alert(
-                    "Vui lòng nhập Username và mật khẩu."
+                    "Key không hợp lệ hoặc đã được sử dụng."
                 );
 
                 return;
             }
 
 
-            loginButton.disabled = true;
+            console.log(
+                "4. Key hợp lệ"
+            );
+
+
+            sessionStorage.setItem(
+                "psc-create-account-key",
+                key
+            );
+
+
+            window.location.href =
+                "login code/create-account.html";
+
+
+            return;
+
+
+        } catch (error) {
+
+            console.error(
+                "CHECK KEY ERROR:",
+                error
+            );
+
+
+            alert(
+                "Không thể kiểm tra Key. Vui lòng thử lại."
+            );
+
+
+            return;
+
+
+        } finally {
+
+            loginButton.disabled = false;
 
             loginButton.textContent =
-                "Đang đăng nhập...";
-
-
-            try {
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient.auth
-                        .signInWithPassword({
-
-                            email:
-                                `${username}@accounts.psc.example.com`,
-
-                            password:
-                                password
-
-                        });
-
-
-                if (error) {
-
-                    console.error(error);
-
-                    throw new Error(
-                        "Username hoặc mật khẩu không đúng."
-                    );
-
-                }
-
-
-                console.log(
-                    "Đăng nhập thành công:",
-                    data.user
-                );
-
-
-                window.location.href =
-                    "index.html";
-
-
-            } catch (error) {
-
-                console.error(error);
-
-                alert(
-                    error.message
-                );
-
-
-            } finally {
-
-                loginButton.disabled = false;
-
-                loginButton.textContent =
-                    "Đăng nhập";
-
-            }
+                "Đăng nhập";
 
         }
+
+    }
+
+
+    // =========================
+    // ĐĂNG NHẬP BÌNH THƯỜNG
+    // =========================
+
+    const username =
+        rawUsername.toLowerCase();
+
+
+    if (!username || !password) {
+
+        alert(
+            "Vui lòng nhập Username và mật khẩu."
+        );
+
+        return;
+    }
+
+
+    loginButton.disabled = true;
+
+    loginButton.textContent =
+        "Đang đăng nhập...";
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth
+                .signInWithPassword({
+
+                    email:
+                        `${username}@accounts.psc.example.com`,
+
+                    password:
+                        password
+
+                });
+
+
+        if (error) {
+
+            console.error(error);
+
+            throw new Error(
+                "Username hoặc mật khẩu không đúng."
+            );
+
+        }
+
+
+        console.log(
+            "Đăng nhập thành công:",
+            data.user
+        );
+
+
+        window.location.href =
+            "index.html";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            error.message
+        );
+
+
+    } finally {
+
+        loginButton.disabled = false;
+
+        loginButton.textContent =
+            "Đăng nhập";
+
+    }
+
+}
+
+
+// =========================
+// CLICK NÚT ĐĂNG NHẬP
+// =========================
+
+if (loginButton) {
+
+    loginButton.addEventListener(
+        "click",
+        handleLogin
     );
+
+}
+
+
+// =========================
+// NHẤN ENTER ĐỂ ĐĂNG NHẬP
+// =========================
+
+if (
+    usernameInput &&
+    passwordInput
+) {
+
+    [usernameInput, passwordInput]
+        .forEach(input => {
+
+            input.addEventListener(
+                "keydown",
+                event => {
+
+                    if (
+                        event.key === "Enter"
+                    ) {
+
+                        event.preventDefault();
+
+                        handleLogin();
+
+                    }
+
+                }
+            );
+
+        });
 
 }

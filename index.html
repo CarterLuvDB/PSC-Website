@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/navigation.css">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/members.css">
+    <link rel="stylesheet" href="css/profile.css">
 </head>
 
 <body>
@@ -101,9 +102,10 @@
                 <a href="#" data-tab="home">Home</a>
                 <a href="#" class="active" data-tab="members">Members</a>
                 <a href="#" data-tab="checkin">Check-in</a>
-                <!-- <a href="#">Task</a>
-                <a href="#">Resources</a>
-                <a href="#">Profile</a> -->
+                <!-- <a href="#">Task</a> -->
+                <!--<a href="#">Resources</a> -->
+                <a href="#" data-tab="profile">Profile</a>
+            
             </div>
 
         </nav>
@@ -338,12 +340,330 @@
             <p>Check-in sẽ được xây dựng sau.</p>
         </div>
     </section>
+    
+                <section
+                    class="tab-content"
+                    id="profile-tab"
+                    data-tab-content="profile"
+                >
+                    <div class="profile-layout">
+
+                        <div class="profile-left">
+
+                            <!-- Avatar -->
+                            <div class="profile-avatar-box">
+                                <button
+                                    class="profile-avatar"
+                                    id="profile-avatar"
+                                    type="button"
+                                    title="Thay ảnh đại diện"
+                                >
+                                    <img
+                                        id="profile-avatar-image"
+                                        src="images/logo.png"
+                                        alt="Avatar"
+                                    >
+                                </button>
+                            </div>
+
+                            <div class="profile-basic-info">
+
+                                <div
+                                    class="profile-name"
+                                    id="profile-name"
+                                >
+                                    Đang tải...
+                                </div>
+
+                                <div
+                                    class="profile-meta"
+                                    id="profile-meta"
+                                >
+                                    Thành viên · Ban
+                                </div>
+
+                                <div class="profile-divider"></div>
+
+                                <button
+                                    class="profile-bio"
+                                    id="profile-bio"
+                                    type="button"
+                                >
+                                    <span
+                                        class="profile-bio-text"
+                                        id="profile-bio-text"
+                                    >
+                                        Chưa có bio.
+                                    </span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div class="profile-right">
+
+                            <!-- Profile header -->
+                            <div class="profile-header">
+                                <div class="profile-header-title">
+                                    Profile
+                                </div>
+
+                                <div class="profile-header-actions">
+                                    <button
+                                        class="profile-action-button"
+                                        id="profile-edit-button"
+                                        type="button"
+                                    >
+                                        Chỉnh sửa thông tin
+                                    </button>
+
+                                    <button
+                                        class="profile-action-button"
+                                        id="profile-security-button"
+                                        type="button"
+                                    >
+                                        Cài đặt bảo mật
+                                    </button>
+                                    <button
+                                        class="profile-help-button"
+                                        id="profile-help-button"
+                                        type="button"
+                                        title="Giải thích"
+                                    >
+                                        ?
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Profile content -->
+                            <div class="profile-content">
+
+                                <!-- Left: Information 1 + 2 -->
+                                <div class="profile-info-column">
+
+                                    <!-- 1. Personal information -->
+                                    <section class="profile-section profile-personal">
+                                        <h2 class="profile-section-title">
+                                            1. THÔNG TIN CÁ NHÂN
+                                        </h2>
+
+                                        <div class="profile-info-grid">
+
+                                            <div class="profile-info-item">
+                                                <span class="profile-info-label">
+                                                    Họ và tên
+                                                </span>
+                                                <div
+                                                    class="profile-info-value"
+                                                    id="profile-full-name"
+                                                >
+                                                    Đang tải...
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-info-item">
+                                                <span class="profile-info-label">
+                                                    Ngày sinh
+                                                </span>
+                                                <div
+                                                    class="profile-info-value"
+                                                    id="profile-date-of-birth"
+                                                >
+                                                    —
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-info-item">
+                                                <span class="profile-info-label">
+                                                    Tuổi
+                                                </span>
+                                                <div
+                                                    class="profile-info-value"
+                                                    id="profile-age"
+                                                >
+                                                    —
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-info-item">
+                                                <span class="profile-info-label">
+                                                    Giới tính
+                                                </span>
+                                                <div
+                                                    class="profile-info-value"
+                                                    id="profile-gender"
+                                                >
+                                                    —
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </section>
+
+                                    <!-- 2. PSC information -->
+                                    <section class="profile-section profile-psc">
+                                        <h2 class="profile-section-title">
+                                            2. THÔNG TIN PSC 🔒
+                                        </h2>
+
+                                        <div class="profile-info-grid">
+
+                                            <div class="profile-info-item">
+                                                <span class="profile-info-label">
+                                                    Gen
+                                                </span>
+                                                <div
+                                                    class="profile-info-value profile-system-value"
+                                                    id="profile-gen"
+                                                >
+                                                    —
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-info-item">
+                                                <span class="profile-info-label">
+                                                    Ban
+                                                </span>
+                                                <div
+                                                    class="profile-info-value profile-system-value"
+                                                    id="profile-department"
+                                                >
+                                                    —
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-info-item">
+                                                <span class="profile-info-label">
+                                                    Chức vụ
+                                                </span>
+                                                <div
+                                                    class="profile-info-value profile-system-value"
+                                                    id="profile-role"
+                                                >
+                                                    —
+                                                </div>
+                                            </div>
+
+                                            <div class="profile-info-item">
+                                                <span class="profile-info-label">
+                                                    Ngày tham gia PSC
+                                                </span>
+                                                <div
+                                                    class="profile-info-value profile-private"
+                                                    id="profile-joined-date"
+                                                >
+                                                    <span>—</span>
+
+                                                    <img
+                                                        src="images/icon/hide.png"
+                                                        alt="Ẩn"
+                                                        class="profile-private-icon"
+                                                    >
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </section>
+
+                                </div>
+
+                                <!-- Right: Contact -->
+                                <section class="profile-section profile-contact">
+
+                                    <h2 class="profile-section-title">
+                                        3. LIÊN HỆ
+                                    </h2>
+
+                                    <div class="profile-contact-list">
+
+                                        <div class="profile-contact-item">
+                                            <span class="profile-info-label">
+                                                Email
+                                            </span>
+                                            <div
+                                                class="profile-info-value"
+                                                id="profile-email"
+                                            >
+                                                —
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-contact-item">
+                                            <span class="profile-info-label">
+                                                Facebook / Instagram
+                                            </span>
+                                            <div
+                                                class="profile-info-value"
+                                                id="profile-social"
+                                            >
+                                                —
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-contact-item">
+                                            <span class="profile-info-label">
+                                                Số điện thoại cá nhân
+                                            </span>
+                                            <div
+                                                class="profile-info-value"
+                                                id="profile-phone"
+                                            >
+                                                —
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="profile-contact-item">
+                                            <span class="profile-info-label">
+                                                Người liên hệ khẩn cấp
+                                            </span>
+
+                                            <div
+                                                class="profile-info-value profile-private"
+                                                id="profile-emergency"
+                                            >
+                                                <span>—</span>
+
+                                                <img
+                                                    src="images/icon/hide.png"
+                                                    alt="Ẩn"
+                                                    class="profile-private-icon"
+                                                >
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-contact-item profile-contact-note">
+                                            <span class="profile-info-label">
+                                                Lưu ý khi nhận liên lạc
+                                            </span>
+
+                                            <div
+                                                class="profile-info-value profile-note-value"
+                                                id="profile-contact-note"
+                                            >
+                                                <span class="profile-note-placeholder">
+                                                    Chưa có lưu ý.
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </section>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </section>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/main.js"></script>
     <script src="js/members-data.js"></script>
     <script src="js/members.js"></script>
+    <script src="js/profile.js"></script>
 
 </body>
 </html>
