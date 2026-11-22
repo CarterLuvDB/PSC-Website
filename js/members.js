@@ -43,6 +43,7 @@ async function loadMembers() {
                 gender,
                 gen,
                 role,
+                is_admin,
                 department,
                 avatar_url,
                 bio
@@ -97,6 +98,9 @@ async function loadMembers() {
                 member.role ||
                 "Thành viên",
 
+            is_admin:
+                member.is_admin === true,
+
             department:
                 member.department ||
                 "—",
@@ -135,13 +139,28 @@ function createMemberCard(member) {
 
     card.type =
         "button";
-    
-    const memberRole =
-    member.department &&
-    member.department.trim()
-        ? `${member.role || "Thành viên"} · ${member.department}`
-        : "Thành viên PSC";
 
+
+    // ================================
+    // ROLE + BAN + ADMIN
+    // ================================
+
+    const memberRole =
+        member.department &&
+        member.department.trim()
+            ? `${member.role || "Thành viên"} · ${member.department}`
+            : "Thành viên PSC";
+
+
+    const memberRoleDisplay =
+        member.is_admin === true
+            ? `${memberRole} · Admin`
+            : memberRole;
+
+
+    // ================================
+    // GIỚI TÍNH
+    // ================================
 
     const genderIcon =
         member.gender === "Nam"
@@ -150,6 +169,10 @@ function createMemberCard(member) {
                 ? "♀"
                 : "—";
 
+
+    // ================================
+    // CARD
+    // ================================
 
     card.innerHTML = `
 
@@ -217,7 +240,9 @@ function createMemberCard(member) {
 
 
             <div class="member-role">
-                ${memberRole}
+
+                ${memberRoleDisplay}
+
             </div>
 
 
@@ -253,7 +278,8 @@ function createMemberCard(member) {
         }
     );
 
-return card;
+
+    return card;
 }
 
 

@@ -236,6 +236,7 @@ function renderProfile(profile) {
     if (profileMeta) {
 
         let meta =
+            profile.role ||
             "Thành viên";
 
         if (profile.department) {
@@ -244,16 +245,11 @@ function renderProfile(profile) {
                 ` · ${profile.department}`;
         }
 
-        if (
-            profile.role &&
-            profile.role.toLowerCase() ===
-                "admin"
-        ) {
+        if (profile.is_admin === true) {
 
             meta +=
                 " · Administrator";
         }
-
         profileMeta.textContent =
             meta;
     }
@@ -561,6 +557,7 @@ async function loadProfile() {
                 gen,
                 gender,
                 role,
+                is_admin,
                 department,
                 avatar_url,
                 date_of_birth,
@@ -670,6 +667,7 @@ async function loadMemberProfile(
                 gen,
                 gender,
                 role,
+                is_admin,
                 department,
                 avatar_url,
                 date_of_birth,
@@ -740,6 +738,7 @@ window.openMemberProfile =
                         gen,
                         gender,
                         role,
+                        is_admin,
                         department,
                         avatar_url,
                         date_of_birth,
@@ -798,14 +797,15 @@ window.openMemberProfile =
 
 
             const roleDepartment =
-                member.department
-                    ? [
-                        member.role || "Thành viên",
-                        member.department
-                    ]
-                        .filter(Boolean)
-                        .join(" · ")
+                member.department &&
+                member.department.trim()
+                    ? `${member.role || "Thành viên"} · ${member.department}`
                     : "Thành viên PSC";
+
+            const roleDepartmentDisplay =
+                member.is_admin === true
+                    ? `${roleDepartment} · Administrator`
+                    : roleDepartment;
 
 
             const genderGen = [
@@ -908,7 +908,7 @@ window.openMemberProfile =
                                 class="member-profile-popup-line"
                             >
                                 ${escapeHtml(
-                                    roleDepartment ||
+                                    roleDepartmentDisplay ||
                                     "Thành viên"
                                 )}
                             </div>
