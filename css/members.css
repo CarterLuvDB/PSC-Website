@@ -390,3 +390,7 @@
     text-align: center;
     white-space: nowrap;
 }
+
+.members-empty {
+    color: white;
+}
