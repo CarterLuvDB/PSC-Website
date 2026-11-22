@@ -16,6 +16,15 @@ const profileSupabase =
 
 
 // =========================
+// STATE
+// =========================
+
+let currentProfileId = null;
+
+let isViewingOwnProfile = true;
+
+
+// =========================
 // HELPERS
 // =========================
 
@@ -83,75 +92,105 @@ function escapeHtml(value) {
 
 
 // =========================
-// LOAD PROFILE
+// CHUYỂN SANG TAB PROFILE
 // =========================
 
-async function loadProfile() {
+function activateProfileTab() {
 
-    const {
-        data: {
-            session
-        }
-    } =
-        await profileSupabase
-            .auth
-            .getSession();
-
-    if (!session) {
-        return;
-    }
-
-    const user =
-        session.user;
-
-
-    const {
-        data: profile,
-        error
-    } =
-        await profileSupabase
-            .from("profiles")
-            .select(`
-                username,
-                full_name,
-                gen,
-                gender,
-                role,
-                department,
-                avatar_url,
-                date_of_birth,
-                joined_at,
-                email,
-                social,
-                phone,
-                emergency_contact,
-                contact_note,
-                bio
-            `)
-            .eq("id", user.id)
-            .maybeSingle();
-
-
-    if (error) {
-
-        console.error(
-            "PROFILE LOAD ERROR:",
-            error
+    const profileTab =
+        document.querySelector(
+            '[data-tab="profile"]'
         );
 
+    if (profileTab) {
+
+        profileTab.click();
+
         return;
     }
 
 
-    if (!profile) {
-
-        console.warn(
-            "Không tìm thấy profile."
+    const profileContent =
+        document.querySelector(
+            '[data-tab-content="profile"]'
         );
 
-        return;
+    if (profileContent) {
+
+        document
+            .querySelectorAll(
+                ".tab-content"
+            )
+            .forEach(
+                content => {
+                    content.classList.remove(
+                        "active"
+                    );
+                }
+            );
+
+        profileContent.classList.add(
+            "active"
+        );
+    }
+}
+
+
+// =========================
+// HIỆN / ẨN NÚT CHỈNH SỬA
+// =========================
+
+function updateProfilePermissions() {
+
+    const editButton =
+        document.getElementById(
+            "profile-edit-button"
+        );
+
+    const securityButton =
+        document.getElementById(
+            "profile-security-button"
+        );
+
+    const bioButton =
+        document.getElementById(
+            "profile-bio"
+        );
+
+
+    if (editButton) {
+
+        editButton.style.display =
+            isViewingOwnProfile
+                ? ""
+                : "none";
     }
 
+
+    if (securityButton) {
+
+        securityButton.style.display =
+            isViewingOwnProfile
+                ? ""
+                : "none";
+    }
+
+
+    if (bioButton) {
+
+        bioButton.style.cursor =
+            isViewingOwnProfile
+                ? "pointer"
+                : "default";
+    }
+}
+
+
+// =========================
+// RENDER PROFILE
+// =========================
+
+function renderProfile(profile) {
 
     // =========================
     // LEFT SIDE
@@ -182,7 +221,6 @@ async function loadProfile() {
 
         profileName.textContent =
             profile.full_name ||
-            profile.username ||
             "Chưa có tên";
     }
 
@@ -274,9 +312,12 @@ async function loadProfile() {
     if (age) {
 
         age.textContent =
-            calculateAge(
-                profile.date_of_birth
-            );
+            profile.age !== null &&
+            profile.age !== undefined
+                ? profile.age
+                : calculateAge(
+                    profile.date_of_birth
+                );
     }
 
 
@@ -337,19 +378,34 @@ async function loadProfile() {
     }
 
 
+    // =========================
+    // NGÀY THAM GIA
+    // =========================
+    // Chỉ hiển thị khi xem chính mình.
+    // profile_directory không có joined_at.
+
     if (joinedDate) {
 
-        joinedDate.innerHTML = `
-            <span>
-                ${
-                    profile.joined_at
-                        ? formatDate(
-                            profile.joined_at
-                        )
-                        : "—"
-                }
-            </span>
-        `;
+        if (
+            isViewingOwnProfile &&
+            profile.joined_at
+        ) {
+
+            joinedDate.innerHTML = `
+                <span>
+                    ${formatDate(
+                        profile.joined_at
+                    )}
+                </span>
+            `;
+
+        } else {
+
+            joinedDate.innerHTML = `
+                <span>—</span>
+            `;
+
+        }
     }
 
 
@@ -407,22 +463,37 @@ async function loadProfile() {
     }
 
 
+    // Người liên hệ khẩn cấp:
+    // chỉ chính mình mới được xem.
+
     if (emergency) {
 
-        emergency.innerHTML = `
-            <span>
-                ${
-                    profile.emergency_contact ||
-                    "—"
-                }
-            </span>
+        if (
+            isViewingOwnProfile &&
+            profile.emergency_contact
+        ) {
 
-            <img
-                src="images/icon/hide.png"
-                alt="Ẩn"
-                class="profile-private-icon"
-            >
-        `;
+            emergency.innerHTML = `
+                <span>
+                    ${escapeHtml(
+                        profile.emergency_contact
+                    )}
+                </span>
+
+                <img
+                    src="images/icon/hide.png"
+                    alt="Ẩn"
+                    class="profile-private-icon"
+                >
+            `;
+
+        } else {
+
+            emergency.innerHTML = `
+                <span>—</span>
+            `;
+
+        }
     }
 
 
@@ -441,7 +512,649 @@ async function loadProfile() {
                 </span>`;
         }
     }
+
+
+    updateProfilePermissions();
 }
+
+
+// =========================
+// LOAD PROFILE CỦA CHÍNH MÌNH
+// =========================
+
+async function loadProfile() {
+
+    const {
+        data: {
+            session
+        }
+    } =
+        await profileSupabase
+            .auth
+            .getSession();
+
+    if (!session) {
+        return;
+    }
+
+    const user =
+        session.user;
+
+
+    currentProfileId =
+        user.id;
+
+    isViewingOwnProfile =
+        true;
+
+
+    const {
+        data: profile,
+        error
+    } =
+        await profileSupabase
+            .from("profiles")
+            .select(`
+                username,
+                full_name,
+                age,
+                gen,
+                gender,
+                role,
+                department,
+                avatar_url,
+                date_of_birth,
+                joined_at,
+                email,
+                social,
+                phone,
+                emergency_contact,
+                contact_note,
+                bio
+            `)
+            .eq("id", user.id)
+            .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "PROFILE LOAD ERROR:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (!profile) {
+
+        console.warn(
+            "Không tìm thấy profile."
+        );
+
+        return;
+    }
+
+
+    renderProfile(
+        profile
+    );
+}
+
+
+// =========================
+// LOAD PROFILE THÀNH VIÊN KHÁC
+// =========================
+
+async function loadMemberProfile(
+    memberId
+) {
+
+    if (!memberId) {
+        return;
+    }
+
+
+    const {
+        data: {
+            session
+        }
+    } =
+        await profileSupabase
+            .auth
+            .getSession();
+
+
+    if (!session) {
+        return;
+    }
+
+
+    currentProfileId =
+        memberId;
+
+    isViewingOwnProfile =
+        memberId ===
+        session.user.id;
+
+
+    // Nếu bấm vào chính mình
+    // thì dùng dữ liệu private từ profiles.
+
+    if (isViewingOwnProfile) {
+
+        await loadProfile();
+
+        return;
+    }
+
+
+    // =========================
+    // PROFILE DIRECTORY
+    // =========================
+    // Không lấy profiles của người khác.
+    // Chỉ lấy dữ liệu được phép hiển thị.
+
+    const {
+        data: profile,
+        error
+    } =
+        await profileSupabase
+            .from("profile_directory")
+            .select(`
+                id,
+                username,
+                full_name,
+                age,
+                gen,
+                gender,
+                role,
+                department,
+                avatar_url,
+                date_of_birth,
+                email,
+                social,
+                phone,
+                contact_note,
+                bio
+            `)
+            .eq("id", memberId)
+            .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "MEMBER PROFILE LOAD ERROR:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (!profile) {
+
+        console.warn(
+            "Không tìm thấy thành viên."
+        );
+
+        return;
+    }
+
+
+    renderProfile(
+        profile
+    );
+}
+
+
+// =========================
+// HÀM TOÀN CỤC CHO MEMBERS.JS
+// =========================
+
+window.openMemberProfile =
+    async function(memberId) {
+
+        if (!memberId) {
+            return;
+        }
+
+        try {
+
+            // =========================
+            // LẤY PROFILE AN TOÀN
+            // =========================
+
+            const {
+                data: member,
+                error
+            } =
+                await profileSupabase
+                    .from("profile_directory")
+                    .select(`
+                        id,
+                        full_name,
+                        age,
+                        gen,
+                        gender,
+                        role,
+                        department,
+                        avatar_url,
+                        date_of_birth,
+                        email,
+                        social,
+                        phone,
+                        contact_note,
+                        bio
+                    `)
+                    .eq("id", memberId)
+                    .maybeSingle();
+
+
+            if (error) {
+
+                console.error(
+                    "MEMBER PROFILE LOAD ERROR:",
+                    error
+                );
+
+                return;
+            }
+
+
+            if (!member) {
+
+                alert(
+                    "Không tìm thấy thông tin thành viên."
+                );
+
+                return;
+            }
+
+
+            // =========================
+            // XÓA POPUP CŨ NẾU CÓ
+            // =========================
+
+            const oldPopup =
+                document.getElementById(
+                    "member-profile-popup"
+                );
+
+            if (oldPopup) {
+                oldPopup.remove();
+            }
+
+
+            // =========================
+            // DỮ LIỆU HEADER
+            // =========================
+
+            const avatar =
+                member.avatar_url ||
+                "images/non-avatar.png";
+
+
+            const roleDepartment =
+                member.department
+                    ? [
+                        member.role || "Thành viên",
+                        member.department
+                    ]
+                        .filter(Boolean)
+                        .join(" · ")
+                    : "Thành viên PSC";
+
+
+            const genderGen = [
+                member.gender,
+                member.gen
+                    ? `Gen ${member.gen}`
+                    : ""
+            ]
+                .filter(Boolean)
+                .join(" · ");
+
+
+            const ageBirthday = [
+                member.age !== null &&
+                member.age !== undefined
+                    ? `${member.age} tuổi`
+                    : "",
+
+                member.date_of_birth
+                    ? formatDate(
+                        member.date_of_birth
+                    )
+                    : ""
+            ]
+                .filter(Boolean)
+                .join(" · ");
+
+
+            // =========================
+            // TẠO POPUP
+            // =========================
+
+            const popup =
+                document.createElement(
+                    "div"
+                );
+
+            popup.id =
+                "member-profile-popup";
+
+            popup.className =
+                "member-profile-popup-overlay";
+
+
+            popup.innerHTML = `
+
+                <div
+                    class="member-profile-popup"
+                    role="dialog"
+                    aria-modal="true"
+                >
+
+                    <button
+                        class="member-profile-popup-close"
+                        type="button"
+                        aria-label="Đóng"
+                    >
+                        ×
+                    </button>
+
+
+                    <!-- =========================
+                         HEADER
+                    ========================== -->
+
+                    <div
+                        class="member-profile-popup-header"
+                    >
+
+                        <div
+                            class="member-profile-popup-avatar"
+                        >
+
+                            <img
+                                src="${escapeHtml(
+                                    avatar
+                                )}"
+                                alt="Avatar"
+                                onerror="
+                                    this.src='images/non-avatar.png'
+                                "
+                            >
+
+                        </div>
+
+
+                        <div
+                            class="member-profile-popup-summary"
+                        >
+
+                            <h2>
+                                ${escapeHtml(
+                                    member.full_name ||
+                                    "Chưa có tên"
+                                )}
+                            </h2>
+
+
+                            <div
+                                class="member-profile-popup-line"
+                            >
+                                ${escapeHtml(
+                                    roleDepartment ||
+                                    "Thành viên"
+                                )}
+                            </div>
+
+
+                            <div
+                                class="member-profile-popup-line"
+                            >
+                                ${escapeHtml(
+                                    genderGen ||
+                                    "Chưa cập nhật"
+                                )}
+                            </div>
+
+
+                            <div
+                                class="member-profile-popup-line"
+                            >
+                                ${escapeHtml(
+                                    ageBirthday ||
+                                    "Chưa cập nhật"
+                                )}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================
+                         BIO
+                    ========================== -->
+
+                    <div
+                        class="member-profile-popup-bio-section"
+                    >
+
+                        <div
+                            class="member-profile-popup-label"
+                        >
+                            BIO
+                        </div>
+
+
+                        <div
+                            class="member-profile-popup-bio"
+                        >
+                            ${escapeHtml(
+                                member.bio ||
+                                "Chưa có bio."
+                            )}
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="member-profile-popup-divider"
+                    ></div>
+
+
+                    <!-- =========================
+                         LIÊN HỆ
+                    ========================== -->
+
+                    <div
+                        class="member-profile-popup-contact-section"
+                    >
+
+                        <div
+                            class="member-profile-popup-label"
+                        >
+                            LIÊN HỆ
+                        </div>
+
+
+                        <div
+                            class="member-profile-popup-contact-grid"
+                        >
+
+                            <div
+                                class="member-profile-popup-contact-item"
+                            >
+
+                                <span>
+                                    Email
+                                </span>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        member.email ||
+                                        "Chưa cập nhật"
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div
+                                class="member-profile-popup-contact-item"
+                            >
+
+                                <span>
+                                    Facebook / Instagram
+                                </span>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        member.social ||
+                                        "Chưa cập nhật"
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div
+                                class="member-profile-popup-contact-item"
+                            >
+
+                                <span>
+                                    Số điện thoại
+                                </span>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        member.phone ||
+                                        "Chưa cập nhật"
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div
+                                class="member-profile-popup-contact-item"
+                            >
+
+                                <span>
+                                    Lưu ý khi nhận liên lạc
+                                </span>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        member.contact_note ||
+                                        "Không có"
+                                    )}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+
+
+            document.body.appendChild(
+                popup
+            );
+
+
+            // =========================
+            // ĐÓNG POPUP
+            // =========================
+
+            const closeButton =
+                popup.querySelector(
+                    ".member-profile-popup-close"
+                );
+
+
+            function closeMemberProfile() {
+
+                popup.remove();
+
+                document.body.style.overflow =
+                    "";
+
+                document.removeEventListener(
+                    "keydown",
+                    handleEscape
+                );
+            }
+
+
+            function handleEscape(
+                event
+            ) {
+
+                if (
+                    event.key ===
+                    "Escape"
+                ) {
+
+                    closeMemberProfile();
+                }
+            }
+
+
+            closeButton.addEventListener(
+                "click",
+                closeMemberProfile
+            );
+
+
+            popup.addEventListener(
+                "click",
+                (event) => {
+
+                    if (
+                        event.target ===
+                        popup
+                    ) {
+
+                        closeMemberProfile();
+                    }
+                }
+            );
+
+
+            document.addEventListener(
+                "keydown",
+                handleEscape
+            );
+
+
+            // Không cho trang phía sau
+            // cuộn khi popup đang mở.
+
+            document.body.style.overflow =
+                "hidden";
+
+
+        } catch (error) {
+
+            console.error(
+                "OPEN MEMBER PROFILE ERROR:",
+                error
+            );
+
+        }
+
+    };
 
 
 // =========================
@@ -449,6 +1162,11 @@ async function loadProfile() {
 // =========================
 
 async function openBioEditor() {
+
+    if (!isViewingOwnProfile) {
+        return;
+    }
+
 
     const {
         data: {
@@ -711,6 +1429,11 @@ async function openBioEditor() {
 // =========================
 
 async function openProfileEditor() {
+
+    if (!isViewingOwnProfile) {
+        return;
+    }
+
 
     const {
         data: {
@@ -1141,6 +1864,172 @@ async function openProfileEditor() {
 
 
 // =========================
+// HELP POPUP
+// =========================
+
+function openHelpPopup() {
+
+    const overlay =
+        document.createElement(
+            "div"
+        );
+
+
+    overlay.className =
+        "profile-help-overlay";
+
+
+    overlay.innerHTML = `
+
+        <div class="profile-help-modal">
+
+            <div class="profile-help-header">
+
+                <span>
+                    Về quyền riêng tư Profile
+                </span>
+
+                <button
+                    type="button"
+                    class="profile-help-close"
+                    id="profile-help-close"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="profile-help-body">
+
+                <div class="profile-help-item">
+
+                    <img
+                        src="images/icon/hide.png"
+                        alt=""
+                        class="profile-help-icon"
+                    >
+
+                    <div>
+
+                        <span class="profile-help-title">
+                            Thông tin được bảo vệ
+                        </span>
+
+                        <br>
+
+                        Một số thông tin chỉ hiển thị
+                        với chính bạn và người có
+                        quyền quản trị.
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-help-item">
+
+                    <div>
+
+                        <span class="profile-help-title">
+                            Tuổi
+                        </span>
+
+                        <br>
+
+                        Tuổi được hệ thống tự động
+                        tính từ ngày sinh và không
+                        thể chỉnh sửa trực tiếp.
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-help-item">
+
+                    <div>
+
+                        <span class="profile-help-title">
+                            Thông tin PSC
+                        </span>
+
+                        <br>
+
+                        Gen, Ban và Chức vụ do hệ thống
+                        quản lý và thành viên không
+                        thể tự thay đổi.
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-help-item">
+
+                    <div>
+
+                        <span class="profile-help-title">
+                            Thông tin liên hệ
+                        </span>
+
+                        <br>
+
+                        Email, mạng xã hội, số điện thoại
+                        và các thông tin liên hệ khác
+                        do bạn cung cấp và có thể
+                        chỉnh sửa trong Profile.
+                        Thông tin này sẽ được hiển thị
+                        cho tất cả mọi người.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+
+    document.body.appendChild(
+        overlay
+    );
+
+
+    const closeHelp = () => {
+
+        overlay.remove();
+    };
+
+
+    overlay
+        .querySelector(
+            "#profile-help-close"
+        )
+        .addEventListener(
+            "click",
+            closeHelp
+        );
+
+
+    overlay.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                event.target ===
+                overlay
+            ) {
+
+                closeHelp();
+            }
+        }
+    );
+}
+
+
+// =========================
 // START
 // =========================
 
@@ -1203,169 +2092,10 @@ document.addEventListener(
 
             helpButton.addEventListener(
                 "click",
-                () => {
-
-                    const overlay =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    overlay.className =
-                        "profile-help-overlay";
-
-
-                    overlay.innerHTML = `
-
-                        <div class="profile-help-modal">
-
-                            <div class="profile-help-header">
-
-                                <span>
-                                    Về quyền riêng tư Profile
-                                </span>
-
-                                <button
-                                    type="button"
-                                    class="profile-help-close"
-                                    id="profile-help-close"
-                                >
-                                    ×
-                                </button>
-
-                            </div>
-
-
-                            <div class="profile-help-body">
-
-                                <div class="profile-help-item">
-
-                                    <img
-                                        src="images/icon/hide.png"
-                                        alt=""
-                                        class="profile-help-icon"
-                                    >
-
-                                    <div>
-
-                                        <span class="profile-help-title">
-                                            Thông tin được bảo vệ
-                                        </span>
-
-                                        <br>
-
-                                        Một số thông tin chỉ hiển thị
-                                        với chính bạn và người có
-                                        quyền quản trị.
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="profile-help-item">
-
-                                    <div>
-
-                                        <span class="profile-help-title">
-                                            Tuổi
-                                        </span>
-
-                                        <br>
-
-                                        Tuổi được hệ thống tự động
-                                        tính từ ngày sinh và không
-                                        thể chỉnh sửa trực tiếp.
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="profile-help-item">
-
-                                    <div>
-
-                                        <span class="profile-help-title">
-                                            Thông tin PSC
-                                        </span>
-
-                                        <br>
-
-                                        Gen, Ban và Chức vụ do hệ thống
-                                        quản lý và thành viên không
-                                        thể tự thay đổi.
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="profile-help-item">
-
-                                    <div>
-
-                                        <span class="profile-help-title">
-                                            Thông tin liên hệ
-                                        </span>
-
-                                        <br>
-
-                                        Email, mạng xã hội, số điện thoại
-                                        và các thông tin liên hệ khác
-                                        do bạn cung cấp và có thể
-                                        chỉnh sửa trong Profile.
-                                        Thông tin này sẽ được hiển thị
-                                        cho tất cả mọi người.
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-                    `;
-
-
-                    document.body.appendChild(
-                        overlay
-                    );
-
-
-                    const closeHelp = () => {
-
-                        overlay.remove();
-                    };
-
-
-                    overlay
-                        .querySelector(
-                            "#profile-help-close"
-                        )
-                        .addEventListener(
-                            "click",
-                            closeHelp
-                        );
-
-
-                    overlay.addEventListener(
-                        "click",
-                        (event) => {
-
-                            if (
-                                event.target ===
-                                overlay
-                            ) {
-
-                                closeHelp();
-                            }
-                        }
-                    );
-
-                }
+                openHelpPopup
             );
         }
 
     }
 );
+

@@ -135,6 +135,12 @@ function createMemberCard(member) {
 
     card.type =
         "button";
+    
+    const memberRole =
+    member.department &&
+    member.department.trim()
+        ? `${member.role || "Thành viên"} · ${member.department}`
+        : "Thành viên PSC";
 
 
     const genderIcon =
@@ -211,9 +217,7 @@ function createMemberCard(member) {
 
 
             <div class="member-role">
-
-                ${member.role} · ${member.department}
-
+                ${memberRole}
             </div>
 
 
@@ -227,7 +231,29 @@ function createMemberCard(member) {
     `;
 
 
-    return card;
+    // ================================
+    // CLICK CARD → PROFILE
+    // ================================
+
+    card.addEventListener(
+        "click",
+        () => {
+
+            if (
+                typeof window.openMemberProfile ===
+                "function"
+            ) {
+
+                window.openMemberProfile(
+                    member.id
+                );
+
+            }
+
+        }
+    );
+
+return card;
 }
 
 

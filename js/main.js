@@ -370,7 +370,13 @@ document.addEventListener(
         );
 
       }
+      // Refresh dữ liệu Members mỗi khi mở tab
+      if (tabName === "members" &&
+          typeof loadMembers === "function") {
 
+        loadMembers();
+
+      }
     }
 
 
